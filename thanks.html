@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>アンケートありがとうございました</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    button { padding: 0.5em 1em; margin-top: 1em; font-size: 1em; }
+    textarea { width: 100%; height: 150px; margin-top: 1em; }
+  </style>
+</head>
+<body>
+  <h1>アンケートありがとうございました</h1>
+  <p>Googleの口コミに投稿いただける方はこちらからお願いします。</p>
+  <button onclick="window.open('https://www.google.com/search?q=ココプライム+日進店&stick=H4sIAAAAAAAA_-NgU1I1qDAzMDA2M05LtLQ0NjMzSU6xMqhINEu0SEtONbZINjJOMUxJXcQq87hpMwg1T3_cvPJx05LHzQsUnk1f-rJh09Nd0wEJWqTJSAAAAA&hl=ja&mat=CeQNyU022p-MElcBmzl_pSmuBx-OnKm2bD_AUHCo_H9O-6waVBOw129HiiCRXf2f77YbJmdi5hUuLR6FtaKPCUT_YFsOcWEjIHp_kV5Wdc4CEWGePWsyuc9v5Yp3LcqHqX4&authuser=0#mpd=~10133057613375016420/customers/reviews','_blank')">口コミを書く</button>
+
+  <p>▼この感想をコピーすることで簡単に口コミ投稿が可能です▼</p>
+  <textarea id="copyText" readonly></textarea>
+  <button onclick="copyToClipboard()">この感想をコピー</button>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const satisfaction = params.get("satisfaction") || "";
+    const menu = params.get("menu") || "";
+    const comment = params.get("comment") || "";
+    const finalText = `満足度：${satisfaction}\nメニュー：${menu}\nコメント：${comment}`;
+    document.getElementById("copyText").value = finalText;
+
+    function copyToClipboard() {
+      const textArea = document.getElementById("copyText");
+      textArea.select();
+      document.execCommand("copy");
+      alert("コピーしました");
+    }
+  </script>
+</body>
+</html>

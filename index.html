@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>アンケートフォーム</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    textarea { width: 100%; height: 150px; }
+    label, select, textarea { display: block; margin: 1em 0; }
+    button { padding: 0.5em 1em; font-size: 1em; }
+  </style>
+</head>
+<body>
+  <h1>アンケート</h1>
+  <form id="surveyForm">
+    <label>質問1：今回の総合満足度を教えて下さい</label>
+    <select name="satisfaction" required>
+      <option value="">選択してください</option>
+      <option value="満足">満足</option>
+      <option value="やや満足">やや満足</option>
+      <option value="やや不満">やや不満</option>
+      <option value="不満">不満</option>
+    </select>
+
+    <label>質問2：ご利用メニューをお選び下さい</label>
+    <select name="menu" required>
+      <option value="">選択してください</option>
+      <option value="七五三">七五三</option>
+      <option value="成人式">成人式</option>
+      <option value="ニューボーン">ニューボーン</option>
+      <option value="マタニティ">マタニティ</option>
+      <option value="お宮参り">お宮参り</option>
+      <option value="ベビーフォト">ベビーフォト</option>
+      <option value="入園・入学・卒園・卒業">入園・入学・卒園・卒業</option>
+      <option value="家族写真">家族写真</option>
+      <option value="ウエディング">ウエディング</option>
+      <option value="その他">その他</option>
+    </select>
+
+    <label>質問3：良かったこと・悪かったことなど感想をお願いします</label>
+    <textarea name="comment" placeholder="七五三の撮影をしました。スタッフの皆さんがとても優しく、子どももリラックスして撮影できました。" required></textarea>
+
+    <button type="submit">送信</button>
+  </form>
+
+  <script>
+    document.getElementById('surveyForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      const params = new URLSearchParams();
+      for (const pair of formData.entries()) {
+        params.append(pair[0], pair[1]);
+      }
+      window.location.href = "thanks.html?" + params.toString();
+    });
+  </script>
+</body>
+</html>
