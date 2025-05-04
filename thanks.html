@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>アンケートありがとうございました</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f5f5f5; }
+    .container { background: #fff; padding: 20px; border-radius: 10px; max-width: 700px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .box { border: 1px solid #ccc; padding: 20px; border-radius: 5px; background: #fdfdfd; margin-top: 10px; white-space: pre-wrap; }
+    button { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+    button:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>アンケートありがとうございました</h2>
+    <p id="satisfaction"></p>
+    <p id="menu"></p>
+    <p><strong>コメント：</strong></p>
+    <div id="comment" class="box"></div>
+    <button onclick="copyComment()">この感想をコピー</button>
+    <p>コピーすることで簡単に口コミ投稿が可能です。</p>
+    <a href="https://www.google.com/search?q=ココプライム+日進店&stick=H4sIAAAAAAAA_-NgU1I1qDAzMDA2M05LtLQ0NjMzSU6xMqhINEu0SEtONbZINjJOMUxJXcQq87hpMwg1T3_cvPJx05LHzQsUnk1f-rJh09Nd0wEJWqTJSAAAAA&hl=ja&mat=CeQNyU022p-MElcBmzl_pSmuBx-OnKm2bD_AUHCo_H9O-6waVBOw129HiiCRXf2f77YbJmdi5hUuLR6FtaKPCUT_YFsOcWEjIHp_kV5Wdc4CEWGePWsyuc9v5Yp3LcqHqX4&authuser=0#mpd=~10133057613375016420/customers/reviews" target="_blank">
+      <button>Googleの口コミに投稿する</button>
+    </a>
+  </div>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const satisfaction = urlParams.get('satisfaction') || '';
+    const menu = urlParams.get('menu') || '';
+    const comment = urlParams.get('comment') || '';
+
+    document.getElementById('satisfaction').innerText = '満足度：' + satisfaction;
+    document.getElementById('menu').innerText = 'メニュー：' + menu;
+    document.getElementById('comment').innerText = comment;
+
+    function copyComment() {
+      const text = document.getElementById('comment').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('コメントをコピーしました。');
+      });
+    }
+  </script>
+</body>
+</html>
