@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>アンケート送信完了</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    .box {
+      border: 1px solid #ccc;
+      padding: 1em;
+      margin: 1em 0;
+      background-color: #f9f9f9;
+    }
+    .info { margin-bottom: 1em; }
+    button.copy-btn {
+      margin-top: 1em;
+      padding: 0.5em 1em;
+      font-size: 1em;
+    }
+    .comment-label {
+      font-weight: bold;
+      margin-bottom: 0.5em;
+    }
+  </style>
+</head>
+<body>
+  <h1>アンケートありがとうございました</h1>
+  <p>▼アンケート結果▼</p>
+  <div class="info">満足度：<span id="satisfaction"></span></div>
+  <div class="info">メニュー：<span id="menu"></span></div>
+  <div class="comment-label">コメント：</div>
+  <div id="comment-box" class="box"></div>
+  <button class="copy-btn" onclick="copyComment()">この感想をコピー</button>
+  <p>コピーすることで簡単に口コミ投稿が可能です。</p>
+  <a href="https://g.page/r/Cd7RI4zj_KimEAE/review" target="_blank"rel="noopener noreferrer">>
+    <button>Googleの口コミに投稿する</button>
+  </a>
+
+  <script>
+    const satisfaction = localStorage.getItem("satisfaction") || "";
+    const menu = localStorage.getItem("menu") || "";
+    const comment = localStorage.getItem("comment") || "";
+
+    document.getElementById("satisfaction").textContent = satisfaction;
+    document.getElementById("menu").textContent = menu;
+    document.getElementById("comment-box").textContent = comment;
+
+    function copyComment() {
+      const text = document.getElementById("comment-box").textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("コメントをコピーしました！");
+      });
+    }
+  </script>
+</body>
+</html>
