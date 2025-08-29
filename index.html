@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>ココプライム日進店 アンケート</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    .form-group { margin-bottom: 1em; }
+    textarea, input[type="text"] { width: 100%; padding: 0.5em; margin-top: 0.5em; }
+    button { padding: 0.5em 1em; font-size: 1em; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>ココプライム日進店 アンケート</h1>
+  <form id="survey-form">
+    <!-- 満足度 -->
+    <div class="form-group">
+      <label>満足度:</label><br>
+      <label><input type="radio" name="satisfaction" value="満足"> 満足</label>
+      <label><input type="radio" name="satisfaction" value="やや満足"> やや満足</label>
+      <label><input type="radio" name="satisfaction" value="やや不満"> やや不満</label>
+      <label><input type="radio" name="satisfaction" value="不満"> 不満</label>
+    </div>
+
+    <!-- ご利用メニュー -->
+    <div class="form-group">
+      <label for="menu">ご利用メニュー:</label><br>
+      <select name="menu" id="menu">
+        <option value="七五三">七五三</option>
+        <option value="成人式">成人式</option>
+        <option value="ニューボーン">ニューボーン</option>
+        <option value="マタニティ">マタニティ</option>
+        <option value="お宮参り">お宮参り</option>
+        <option value="ベビーフォト">ベビーフォト</option>
+        <option value="入園・入学・卒園・卒業">入園・入学・卒園・卒業</option>
+        <option value="家族写真">家族写真</option>
+        <option value="ウエディング">ウエディング</option>
+        <option value="その他">その他</option>
+      </select>
+      <input type="text" id="menu-other" name="menu_other" class="hidden" placeholder="ご利用メニュー（その他）をご入力ください">
+    </div>
+
+    <!-- 当店を知ったきっかけ -->
+    <div class="form-group">
+      <label>当店を知ったきっかけ:</label><br>
+      <label><input type="radio" name="find_us" value="Google検索"> Google検索</label><br>
+      <label><input type="radio" name="find_us" value="Google口コミ"> Google口コミ</label><br>
+      <label><input type="radio" name="find_us" value="Instagram"> Instagram（インスタグラム）</label><br>
+      <label><input type="radio" name="find_us" value="紹介"> 紹介（ご家族・ご友人など）</label><br>
+      <label><input type="radio" name="find_us" value="リピート"> リピート</label><br>
+      <label><input type="radio" name="find_us" value="その他"> その他</label>
+      <input type="text" id="findus-other" name="findus_other" class="hidden" placeholder="その他の場合はご入力ください">
+    </div>
+
+    <!-- コメント -->
+    <div class="form-group">
+      <label for="comment">コメント:</label><br>
+      <textarea name="comment" id="comment" placeholder="(例)七五三の撮影をしました。スタッフの方がとても親切で、子どもも楽しそうに撮影できました。仕上がりにも満足です。"></textarea>
+    </div>
+
+    <button type="submit">送信</button>
+  </form>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("BTw7flRrgTq7RVX7v");
+
+    // その他入力欄の表示制御
+    const menuSelect = document.getElementById("menu");
+    const menuOther = document.getElementById("menu-other");
+    menuSelect.addEventListener("change", () => {
+      menuOther.classList.toggle("hidden", menuSelect.value !== "その他");
+    });
+
+    const findUsRadios = document.querySelectorAll('input[name="find_us"]');
+    const findUsOther = document.getElementById("findus-other");
+    findUsRadios.forEach(radio => {
+      radio.addEventListener("change", () => {
+        findUsOther.classList.toggle("hidden", radio.value !== "その他" || !radio.checked);
+      });
+    });
+
+    // フォーム送信
+    document.getElementById("survey-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const satisfaction = document.querySelector('input[name="satisfaction"]:checked')?.value || "";
+      const menu = menuSelect.value === "その他" ? menuOther.value : menuSelect.value;
+      const find_us = document.querySelector('input[name="find_us"]:checked')?.value || "";
+      const find_us_final = find_us === "その他" ? findUsOther.value : find_us;
+      const comment = document.getElementById("comment").value;
+
+      emailjs.send("service_4ypfuxh", "survey_template", {
+        satisfaction: satisfaction,
+        menu: menu,
+        find_us: find_us_final,
+        comment: comment
+      })
+      .then(function(response) {
+        console.log("送信成功:", response);
+        window.location.href = "thanks.html";
+      }, function(error) {
+        console.error("送信失敗:", error);
+        alert("送信に失敗しました。もう一度お試しください。");
+      });
+    });
+  </script>
+</body>
+</html>
