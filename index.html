@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ココプライム日進店 アンケート</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    h1 { text-align: center; margin-bottom: 1.5em; }
+    .question { margin-bottom: 2em; }
+    .question h2 { font-size: 1.1em; margin-bottom: 0.5em; }
+
+    .options { display: flex; flex-direction: column; gap: 0.5em; }
+    .options label {
+      display: block;
+      border: 1px solid #ccc;
+      padding: 0.75em;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #f9f9f9;
+    }
+    .options input[type="radio"] { display: none; }
+    .options input[type="radio"]:checked + span {
+      background: #007BFF;
+      color: #fff;
+      border-radius: 5px;
+      padding: 0.75em;
+      display: block;
+    }
+    .options span {
+      display: block;
+      width: 100%;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.75em;
+      margin-top: 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    button {
+      display: block;
+      margin: 2em auto;
+      padding: 0.75em 2em;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .hidden { display: none; }
+    ::placeholder { color: #888; }
+  </style>
+</head>
+<body>
+  <h1>ココプライム日進店 アンケート</h1>
+  <form id="surveyForm">
+    <!-- 満足度 -->
+    <div class="question">
+      <h2>満足度を教えてください</h2>
+      <div class="options">
+        <label><input type="radio" name="satisfaction" value="とても満足"><span>とても満足</span></label>
+        <label><input type="radio" name="satisfaction" value="満足"><span>満足</span></label>
+        <label><input type="radio" name="satisfaction" value="普通"><span>普通</span></label>
+        <label><input type="radio" name="satisfaction" value="不満"><span>不満</span></label>
+      </div>
+    </div>
+
+    <!-- ご利用メニュー -->
+    <div class="question">
+      <h2>ご利用メニューを教えてください</h2>
+      <div class="options">
+        <label><input type="radio" name="menu" value="マタニティ"><span>マタニティ</span></label>
+        <label><input type="radio" name="menu" value="ニューボーン"><span>ニューボーン</span></label>
+        <label><input type="radio" name="menu" value="お宮参り"><span>お宮参り</span></label>
+        <label><input type="radio" name="menu" value="百日祝い"><span>百日祝い</span></label>
+        <label><input type="radio" name="menu" value="ハーフバースデー"><span>ハーフバースデー</span></label>
+        <label><input type="radio" name="menu" value="バースデー"><span>バースデー</span></label>
+        <label><input type="radio" name="menu" value="七五三"><span>七五三</span></label>
+        <label><input type="radio" name="menu" value="入園・入学"><span>入園・入学</span></label>
+        <label><input type="radio" name="menu" value="卒園・卒業"><span>卒園・卒業</span></label>
+        <label><input type="radio" name="menu" value="成人式"><span>成人式</span></label>
+        <label><input type="radio" name="menu" value="ウエディング"><span>ウエディング</span></label>
+        <label><input type="radio" name="menu" value="家族写真"><span>家族写真</span></label>
+        <label><input type="radio" name="menu" value="その他"><span>その他</span></label>
+      </div>
+      <input type="text" id="menu-other" class="hidden" name="menu-other" placeholder="その他の場合はこちらにご記入ください">
+    </div>
+
+    <!-- 当店を知ったきっかけ -->
+    <div class="question">
+      <h2>当店を知ったきっかけを教えてください</h2>
+      <div class="options">
+        <label><input type="radio" name="source" value="Google検索"><span>Google検索</span></label>
+        <label><input type="radio" name="source" value="Google口コミ"><span>Google口コミ</span></label>
+        <label><input type="radio" name="source" value="Instagram"><span>Instagram</span></label>
+        <label><input type="radio" name="source" value="紹介"><span>紹介（ご家族・ご友人など）</span></label>
+        <label><input type="radio" name="source" value="リピート"><span>リピート</span></label>
+        <label><input type="radio" name="source" value="その他"><span>その他</span></label>
+      </div>
+      <input type="text" id="source-other" class="hidden" name="source-other" placeholder="その他の場合はこちらにご記入ください">
+    </div>
+
+    <!-- コメント -->
+    <div class="question">
+      <h2>どのような撮影メニューでご利用頂いたかご記入後、感想をご記入ください</h2>
+      <textarea id="comment" name="comment" rows="6"
+        placeholder="（例）七五三の撮影でご利用させていただきました。はじめは緊張していた娘もすぐに笑顔になり、自然な表情をたくさん撮って頂きました。娘も楽しそうにしていて、こちらでお願いして本当に良かったです。"></textarea>
+    </div>
+
+    <button type="submit">送信</button>
+  </form>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("YOUR_PUBLIC_KEY"); // ←差し替え
+
+    const menuRadios = document.querySelectorAll('input[name="menu"]');
+    const menuOther = document.getElementById("menu-other");
+    menuRadios.forEach(radio => {
+      radio.addEventListener("change", () => {
+        menuOther.classList.toggle("hidden", !(radio.value === "その他" && radio.checked));
+      });
+    });
+
+    const sourceRadios = document.querySelectorAll('input[name="source"]');
+    const sourceOther = document.getElementById("source-other");
+    sourceRadios.forEach(radio => {
+      radio.addEventListener("change", () => {
+        sourceOther.classList.toggle("hidden", !(radio.value === "その他" && radio.checked));
+      });
+    });
+
+    document.getElementById("surveyForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const satisfaction = document.querySelector('input[name="satisfaction"]:checked')?.value || "";
+      let menu = document.querySelector('input[name="menu"]:checked')?.value || "";
+      if (menu === "その他") menu = menuOther.value;
+      let source = document.querySelector('input[name="source"]:checked')?.value || "";
+      if (source === "その他") source = sourceOther.value;
+      const comment = document.getElementById("comment").value;
+
+      // 📩 EmailJSで送信（お店に届く）
+      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+        satisfaction: satisfaction,
+        menu: menu,
+        source: source,
+        comment: comment
+      }).then(function() {
+        // thanks.html に渡す用
+        localStorage.setItem("satisfaction", satisfaction);
+        localStorage.setItem("menu", menu);
+        localStorage.setItem("source", source);
+        localStorage.setItem("comment", comment);
+        window.location.href = "thanks.html";
+      }, function(error) {
+        console.error("送信失敗:", error);
+        alert("送信に失敗しました。もう一度お試しください。");
+      });
+    });
+  </script>
+</body>
+</html>
