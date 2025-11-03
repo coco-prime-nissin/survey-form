@@ -94,38 +94,36 @@
     toggleOther("source","source-other");
 
     // フォーム送信
-   document.getElementById("survey-form").addEventListener("submit", function(e) {
-  e.preventDefault();
+    document.getElementById("surveyForm").addEventListener("submit", function(e){
+      e.preventDefault();
 
-  const satisfaction = document.querySelector('input[name="satisfaction"]:checked')?.value || "";
-  
-  let menu = document.getElementById("menu").value;
-  if (menu === "その他") {
-    menu = document.getElementById("menu-other").value || "その他";
-  }
+      const satisfaction = document.querySelector('input[name="satisfaction"]:checked')?.value || "";
+      let menu = document.querySelector('input[name="menu"]:checked')?.value || "";
+      if(menu==="その他") menu = document.getElementById("menu-other").value;
+      let source = document.querySelector('input[name="source"]:checked')?.value || "";
+      if(source==="その他") source = document.getElementById("source-other").value;
+      const comment = document.getElementById("comment").value;
 
-  let source = document.querySelector('input[name="find_us"]:checked')?.value || "";
-  if (source === "その他") {
-    source = document.getElementById("findus-other").value || "その他";
-  }
+      // ★localStorage に保存
+      localStorage.setItem("satisfaction", satisfaction);
+      localStorage.setItem("menu", menu);
+      localStorage.setItem("source", source);
+      localStorage.setItem("comment", comment);
 
-  const comment = document.getElementById("comment").value || "";
-
-  emailjs.send("vice_4ypfuxh", "survey_template", {
-    satisfaction: satisfaction,
-    menu: menu,
-    source: source,
-    comment: comment
-  })
-  .then(function(response) {
-    console.log("送信成功:", response);
-    window.location.href = "thanks.html";
-  }, function(error) {
-    console.error("送信失敗:", error);
-    alert("送信に失敗しました。もう一度お試しください。");
-  });
-});
-
+      // EmailJS 送信
+      emailjs.send("service_4ypfuxh", "survey_template", {
+        satisfaction: satisfaction,
+        menu: menu,
+        source: source,
+        comment: comment
+      }).then(function(response){
+        console.log("送信成功:", response);
+        window.location.href="thanks.html";
+      }, function(error){
+        console.error("送信失敗:", error);
+        alert("送信に失敗しました。もう一度お試しください。");
+      });
+    });
   </script>
 </body>
 </html>
