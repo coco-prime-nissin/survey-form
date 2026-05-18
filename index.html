@@ -98,20 +98,33 @@
 document.getElementById("surveyForm").addEventListener("submit", function(e){
   e.preventDefault();
 
+  const btn = document.querySelector("button"); // ←追加
+
   const data = new FormData(this);
 
-  localStorage.setItem("satisfaction", data.get("satisfaction"));
-  localStorage.setItem("menu", data.get("menu"));
-  localStorage.setItem("source", data.get("source"));
-  localStorage.setItem("usage", data.get("usage"));
-  localStorage.setItem("comment", data.get("comment"));
+  const params = {   // ←これが必要
+    satisfaction: data.get("satisfaction"),
+    menu: data.get("menu"),
+    source: data.get("source"),
+    usage: data.get("usage"),
+    comment: data.get("comment")
+  };
 
- emailjs.send("service_ca72jid", "survey_template", params)
+  localStorage.setItem("satisfaction", params.satisfaction);
+  localStorage.setItem("menu", params.menu);
+  localStorage.setItem("source", params.source);
+  localStorage.setItem("usage", params.usage);
+  localStorage.setItem("comment", params.comment);
+
+  btn.disabled = true; // ←送信中ロック
+
+  emailjs.send("service_ca72jid", "survey_template", params)
     .then(function(){
       window.location.href = "thanks.html";
     })
-    .catch(function(){
+    .catch(function(error){
       alert("送信に失敗しました。もう一度お試しください。");
+      console.log(error); // ←原因見れる
       btn.disabled = false;
     });
 });
