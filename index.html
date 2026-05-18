@@ -119,14 +119,16 @@ document.getElementById("surveyForm").addEventListener("submit", function(e){
   btn.disabled = true; // 
 
   emailjs.send("service_4ypfuxh", "survey_template", params)
-    .then(function(){
-      window.location.href = "thanks.html";
-    })
-    .catch(function(error){
-  alert("エラー内容: " + error.text);
-  console.log("エラー詳細:", error);
-  btn.disabled = false;
-});
+  .then(function(response){
+    alert("送信成功！");
+    console.log("成功:", response);
+    window.location.href = "thanks.html";
+  })
+  .catch(function(error){
+    alert("エラー内容: " + (error.text || JSON.stringify(error)));
+    console.log("エラー詳細:", error);
+    btn.disabled = false;
+  });
 </script>
 
 </body>
