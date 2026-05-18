@@ -98,11 +98,11 @@
 document.getElementById("surveyForm").addEventListener("submit", function(e){
   e.preventDefault();
 
-  const btn = document.querySelector("button"); // ←追加
+  const btn = document.querySelector("button"); // 
 
   const data = new FormData(this);
 
-  const params = {   // ←これが必要
+  const params = {   // 
     satisfaction: data.get("satisfaction"),
     menu: data.get("menu"),
     source: data.get("source"),
@@ -116,17 +116,16 @@ document.getElementById("surveyForm").addEventListener("submit", function(e){
   localStorage.setItem("usage", params.usage);
   localStorage.setItem("comment", params.comment);
 
-  btn.disabled = true; // ←送信中ロック
+  btn.disabled = true; // 
 
   emailjs.send("service_4ypfuxh", "survey_template", params)
     .then(function(){
       window.location.href = "thanks.html";
     })
     .catch(function(error){
-      alert("送信に失敗しました。もう一度お試しください。");
-      console.log(error); // ←原因見れる
-      btn.disabled = false;
-    });
+  alert("エラー内容: " + error.text);
+  console.log("エラー詳細:", error);
+  btn.disabled = false;
 });
 </script>
 
