@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ココプライム日進店 アンケート</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+  emailjs.init("BTw7flRrgTq7RVX7v"); // Public Key
+})();
+</script>
+
   <style>
     body { font-family: "Helvetica Neue", Arial, sans-serif; padding: 1em; background: #f9f9f9; }
     h1 { text-align: center; color: #009fe8; }
@@ -99,7 +106,14 @@ document.getElementById("surveyForm").addEventListener("submit", function(e){
   localStorage.setItem("usage", data.get("usage"));
   localStorage.setItem("comment", data.get("comment"));
 
-  window.location.href = "thanks.html";
+ emailjs.send("service_ca72jid", "survey_template", params)
+    .then(function(){
+      window.location.href = "thanks.html";
+    })
+    .catch(function(){
+      alert("送信に失敗しました。もう一度お試しください。");
+      btn.disabled = false;
+    });
 });
 </script>
 
